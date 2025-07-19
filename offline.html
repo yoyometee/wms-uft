@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ออฟไลน์ - Austam Good WMS</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+        
+        .offline-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            max-width: 500px;
+            margin: 20px;
+        }
+        
+        .offline-icon {
+            font-size: 80px;
+            color: #6c757d;
+            margin-bottom: 20px;
+        }
+        
+        .offline-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .offline-subtitle {
+            font-size: 18px;
+            color: #6c757d;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .features-list {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            text-align: left;
+        }
+        
+        .features-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 8px 0;
+        }
+        
+        .feature-icon {
+            color: #28a745;
+            margin-right: 12px;
+            font-size: 18px;
+            width: 20px;
+        }
+        
+        .feature-text {
+            color: #495057;
+            font-size: 16px;
+        }
+        
+        .retry-btn {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+            min-width: 150px;
+        }
+        
+        .retry-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,123,255,0.3);
+        }
+        
+        .cache-btn {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+        
+        .cache-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(40,167,69,0.3);
+        }
+        
+        .status-indicator {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+        
+        .status-offline {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .status-online {
+            background: #d1f2eb;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .sync-indicator {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #6c757d;
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @media (max-width: 600px) {
+            .offline-container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+            
+            .offline-title {
+                font-size: 28px;
+            }
+            
+            .offline-subtitle {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <!-- Offline Icon -->
+        <div class="offline-icon">
+            📱💔
+        </div>
+        
+        <!-- Title and Subtitle -->
+        <h1 class="offline-title">ไม่มีการเชื่อมต่ออินเทอร์เน็ต</h1>
+        <p class="offline-subtitle">
+            คุณอยู่ในโหมดออฟไลน์ แต่ยังสามารถใช้งานฟีเจอร์บางส่วนได้
+        </p>
+        
+        <!-- Available Features -->
+        <div class="features-list">
+            <div class="features-title">ฟีเจอร์ที่สามารถใช้ได้ออฟไลน์</div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">✅</div>
+                <div class="feature-text">ดูข้อมูลที่แคชไว้ล่าสุด</div>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">✅</div>
+                <div class="feature-text">บันทึกธุรกรรมใหม่ (จะซิงค์เมื่อออนไลน์)</div>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">✅</div>
+                <div class="feature-text">ค้นหาข้อมูลในแคช</div>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">✅</div>
+                <div class="feature-text">ใช้งานเครื่องมือพื้นฐาน</div>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">⏳</div>
+                <div class="feature-text">รายงานออนไลน์ (ใช้ได้เมื่อออนไลน์)</div>
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <button class="retry-btn" onclick="retryConnection()">
+            <span id="retry-text">ลองเชื่อมต่อใหม่</span>
+            <span id="retry-spinner" class="loading-spinner hidden"></span>
+        </button>
+        
+        <br>
+        
+        <button class="cache-btn" onclick="goToHome()">
+            🏠 กลับหน้าหลัก
+        </button>
+        
+        <button class="cache-btn" onclick="clearCache()">
+            🗑️ ล้างข้อมูลแคช
+        </button>
+        
+        <!-- Status Indicator -->
+        <div id="status-indicator" class="status-indicator status-offline">
+            🔴 ออฟไลน์ - ไม่มีการเชื่อมต่ออินเทอร์เน็ต
+        </div>
+        
+        <!-- Sync Status -->
+        <div id="sync-indicator" class="sync-indicator">
+            <span id="pending-sync-count">0</span> รายการรอการซิงค์
+        </div>
+    </div>
+    
+    <script>
+        // Check online status
+        function updateOnlineStatus() {
+            const statusIndicator = document.getElementById('status-indicator');
+            const retryBtn = document.querySelector('.retry-btn');
+            
+            if (navigator.onLine) {
+                statusIndicator.textContent = '🟢 ออนไลน์ - เชื่อมต่อสำเร็จ';
+                statusIndicator.className = 'status-indicator status-online';
+                retryBtn.textContent = '🏠 เข้าสู่ระบบ';
+                retryBtn.onclick = goToHome;
+                
+                // Auto redirect after 2 seconds
+                setTimeout(() => {
+                    window.location.href = '/wms-uft/';
+                }, 2000);
+            } else {
+                statusIndicator.textContent = '🔴 ออฟไลน์ - ไม่มีการเชื่อมต่ออินเทอร์เน็ต';
+                statusIndicator.className = 'status-indicator status-offline';
+                retryBtn.textContent = 'ลองเชื่อมต่อใหม่';
+                retryBtn.onclick = retryConnection;
+            }
+        }
+        
+        // Retry connection
+        async function retryConnection() {
+            const retryText = document.getElementById('retry-text');
+            const retrySpinner = document.getElementById('retry-spinner');
+            const retryBtn = document.querySelector('.retry-btn');
+            
+            retryBtn.disabled = true;
+            retryText.textContent = 'กำลังเชื่อมต่อ...';
+            retrySpinner.classList.remove('hidden');
+            
+            try {
+                // Try to fetch a small resource to test connection
+                const response = await fetch('/wms-uft/api/refresh-session.php', {
+                    method: 'GET',
+                    cache: 'no-cache'
+                });
+                
+                if (response.ok) {
+                    retryText.textContent = 'เชื่อมต่อสำเร็จ!';
+                    retrySpinner.classList.add('hidden');
+                    
+                    setTimeout(() => {
+                        window.location.href = '/wms-uft/';
+                    }, 1000);
+                } else {
+                    throw new Error('Connection failed');
+                }
+            } catch (error) {
+                retryText.textContent = 'ลองเชื่อมต่อใหม่';
+                retrySpinner.classList.add('hidden');
+                retryBtn.disabled = false;
+                
+                // Show error message briefly
+                const statusIndicator = document.getElementById('status-indicator');
+                const originalText = statusIndicator.textContent;
+                statusIndicator.textContent = '❌ ไม่สามารถเชื่อมต่อได้ กรุณาลองใหม่';
+                
+                setTimeout(() => {
+                    statusIndicator.textContent = originalText;
+                }, 3000);
+            }
+        }
+        
+        // Go to home page
+        function goToHome() {
+            window.location.href = '/wms-uft/';
+        }
+        
+        // Clear cache
+        async function clearCache() {
+            if ('serviceWorker' in navigator) {
+                try {
+                    const registration = await navigator.serviceWorker.getRegistration();
+                    if (registration) {
+                        // Send message to service worker to clear cache
+                        const messageChannel = new MessageChannel();
+                        
+                        messageChannel.port1.onmessage = function(event) {
+                            if (event.data.success) {
+                                alert('ล้างข้อมูลแคชสำเร็จ');
+                                location.reload();
+                            }
+                        };
+                        
+                        registration.active.postMessage({
+                            type: 'CLEAR_CACHE'
+                        }, [messageChannel.port2]);
+                    }
+                } catch (error) {
+                    console.error('Failed to clear cache:', error);
+                    alert('ไม่สามารถล้างข้อมูลแคชได้');
+                }
+            }
+        }
+        
+        // Check for pending sync items
+        async function checkPendingSync() {
+            try {
+                if ('indexedDB' in window) {
+                    const request = indexedDB.open('AustamWMS', 1);
+                    
+                    request.onsuccess = function(event) {
+                        const db = event.target.result;
+                        
+                        if (db.objectStoreNames.contains('sync_queue')) {
+                            const transaction = db.transaction(['sync_queue'], 'readonly');
+                            const store = transaction.objectStore('sync_queue');
+                            const countRequest = store.count();
+                            
+                            countRequest.onsuccess = function() {
+                                const count = countRequest.result;
+                                document.getElementById('pending-sync-count').textContent = count;
+                                
+                                if (count > 0) {
+                                    document.getElementById('sync-indicator').style.color = '#dc3545';
+                                }
+                            };
+                        }
+                    };
+                }
+            } catch (error) {
+                console.error('Failed to check pending sync:', error);
+            }
+        }
+        
+        // Event listeners
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+        
+        // Initialize
+        updateOnlineStatus();
+        checkPendingSync();
+        
+        // Check connection every 30 seconds
+        setInterval(updateOnlineStatus, 30000);
+        setInterval(checkPendingSync, 10000);
+        
+        // Register service worker if not already registered
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/wms-uft/sw.js')
+                .then(registration => {
+                    console.log('Service Worker registered from offline page');
+                })
+                .catch(error => {
+                    console.error('Service Worker registration failed:', error);
+                });
+        }
+    </script>
+</body>
+</html>

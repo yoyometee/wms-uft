@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(mkdir:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(ls:*)",
+      "Bash(touch:*)",
+      "Bash(find:*)",
+      "Bash(tree:*)"
     ],
     "deny": []
   }

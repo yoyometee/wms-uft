@@ -156,13 +156,26 @@ class Transaction {
             $params = [];
             
             foreach($this->transaction_tables as $type => $table) {
-                $unions[] = "SELECT '$type' as source, tags_id, ประเภทหลัก, ประเภทย่อย, 
-                                   sku, product_name, pallet_id, location_id, แพ็ค, ชิ้น, น้ำหนัก,
-                                   created_at, name_edit, transaction_status, remark
-                            FROM $table";
+                $unions[] = "SELECT 
+                    '$type' as source, 
+                    created_at, 
+                    ประเภทหลัก, 
+                    sku, 
+                    product_name, 
+                    pallet_id, 
+                    location_id, 
+                    ชิ้น, 
+                    น้ำหนัก, 
+                    name_edit,
+                    tags_id,
+                    ประเภทย่อย,
+                    แพ็ค,
+                    transaction_status,
+                    remark
+                FROM $table";
             }
             
-            $query = "SELECT t.*, p.product_name as full_product_name
+            $query = "SELECT t.*, COALESCE(t.product_name, p.product_name) as full_product_name
                      FROM (" . implode(' UNION ALL ', $unions) . ") t
                      LEFT JOIN master_sku_by_stock p ON t.sku = p.sku
                      WHERE 1=1";
@@ -234,23 +247,18 @@ class Transaction {
                     continue;
                 }
                 
-                // Ensure all required fields exist with default values
+                // Ensure all required fields exist with default values for DataTables
                 $cleaned_trans = [
                     'created_at' => $trans['created_at'] ?? date('Y-m-d H:i:s'),
                     'ประเภทหลัก' => $trans['ประเภทหลัก'] ?? 'ไม่ระบุ',
                     'sku' => $trans['sku'] ?? '-',
-                    'product_name' => $trans['product_name'] ?? $trans['full_product_name'] ?? '-',
+                    'product_name' => !empty($trans['full_product_name']) ? $trans['full_product_name'] : 
+                                    (!empty($trans['product_name']) ? $trans['product_name'] : '-'),
                     'pallet_id' => $trans['pallet_id'] ?? '-',
                     'location_id' => $trans['location_id'] ?? '-',
-                    'ชิ้น' => is_numeric($trans['ชิ้น']) ? $trans['ชิ้น'] : 0,
-                    'น้ำหนัก' => is_numeric($trans['น้ำหนัก']) ? $trans['น้ำหนัก'] : 0,
-                    'name_edit' => $trans['name_edit'] ?? '-',
-                    'source' => $trans['source'] ?? 'unknown',
-                    'tags_id' => $trans['tags_id'] ?? '',
-                    'ประเภทย่อย' => $trans['ประเภทย่อย'] ?? '',
-                    'แพ็ค' => $trans['แพ็ค'] ?? 0,
-                    'transaction_status' => $trans['transaction_status'] ?? 'completed',
-                    'remark' => $trans['remark'] ?? ''
+                    'ชิ้น' => is_numeric($trans['ชิ้น']) ? (int)$trans['ชิ้น'] : 0,
+                    'น้ำหนัก' => is_numeric($trans['น้ำหนัก']) ? (float)$trans['น้ำหนัก'] : 0.0,
+                    'name_edit' => $trans['name_edit'] ?? '-'
                 ];
                 
                 $cleaned_transactions[] = $cleaned_trans;
@@ -262,6 +270,7 @@ class Transaction {
             
         } catch(Exception $e) {
             error_log("Get recent transactions error: " . $e->getMessage());
+            // Return empty array with proper structure for DataTables
             return [];
         }
     }

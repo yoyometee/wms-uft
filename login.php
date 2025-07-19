@@ -1,10 +1,6 @@
 <?php
-session_start();
-
-// Include configuration and classes
-require_once 'config/database.php';
-require_once 'config/settings.php';
-require_once 'includes/functions.php';
+// Include new configuration system
+require_once 'config/app_config.php';
 require_once 'classes/Database.php';
 require_once 'classes/User.php';
 
@@ -25,8 +21,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         $error_message = 'กรุณากรอกรหัสผู้ใช้และรหัสผ่าน';
     } else {
         try {
-            $database = new Database();
-            $db = $database->connect();
+            $db = getDBConnection();
             $user = new User($db);
             
             $login_result = $user->login($user_id, $password);

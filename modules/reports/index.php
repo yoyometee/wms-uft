@@ -1,10 +1,6 @@
 <?php
-session_start();
-
-// Include configuration and classes
-require_once '../../config/database.php';
-require_once '../../config/settings.php';
-require_once '../../includes/functions.php';
+// Include new configuration system
+require_once '../../config/app_config.php';
 require_once '../../classes/Database.php';
 require_once '../../classes/User.php';
 require_once '../../classes/Product.php';
@@ -12,12 +8,10 @@ require_once '../../classes/Location.php';
 require_once '../../classes/Transaction.php';
 
 // Check login and permissions
-checkLogin();
 checkPermission('office'); // Only office and admin can view reports
 
 // Initialize database connection
-$database = new Database();
-$db = $database->connect();
+$db = getDBConnection();
 
 // Initialize classes
 $user = new User($db);

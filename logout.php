@@ -1,10 +1,6 @@
 <?php
-session_start();
-
-// Include configuration and classes
-require_once 'config/database.php';
-require_once 'config/settings.php';
-require_once 'includes/functions.php';
+// Include new configuration system
+require_once 'config/app_config.php';
 
 // Log the logout activity
 if(isset($_SESSION['user_id'])) {
